@@ -1,0 +1,74 @@
+POST /add-movie
+{
+  "title": "Spider-Man",
+  "year": "2002",
+  "rated": "PG-13",
+  "released": "03 May 2002",
+  "runtime": "121 min",
+  "genre": "Action, Adventure, Sci-Fi",
+  "director": {
+    "name": "Sam Raimi"
+  },
+  "writer": "Stan Lee (Marvel comic book), Steve Ditko (Marvel comic book), David Koepp (screenplay)",
+  "actors": [
+    {
+      "name": "Tobey Maguire",
+      "image": "image",
+      "gender": "M"
+    },
+    {
+      "name": "Willem Dafoe",
+      "image": "image",
+      "gender": "M"
+    }
+  ],
+  "plot": "When bitten by a genetically modified spider, a nerdy, shy, and awkward high school student gains spider-like abilities that he eventually must use to fight evil as a superhero after tragedy befalls his family.",
+  "language": "English",
+  "country": "USA",
+  "awards": "Nominated for 2 Oscars. Another 16 wins & 61 nominations.",
+  "poster": "image",
+  "rating": "7.3",
+  "votes": "680,890",
+  "trailler": "link",
+  "production": "Marvel Films, Laura Ziskin Productions",
+  "likes": 0, // default - NOT INCLUDED IN REQUEST
+  "reviews": [], // default - NOT INCLUDED IN REQUEST
+}
+//
+POST /sign-up
+{
+  "name": "John Doe",
+  "likedMovies": [], // List of Movie IDs
+  "email": "johndoe@hotmail.com", // Check while sign-up if email exists
+  "password": "718habdhfb7kasbd" // Encrypted hash
+}
+//
+POST /sign-in
+{
+  "email": "johndoe@hotmail.com",
+  "password": "718habdhfb7kasbd" // Encrypted hash
+}
+//
+POST /review
+{
+  "movieId": "", // Movie ID - append this review in reviews list of movie
+  "userId": "", // User ID
+  "review": "User's point of view of the movie",
+  "rating": "5.5" // score out of 10
+}
+//
+POST /like
+{
+  "userId": "", // User ID - used to add movieId to user's list of liked movies
+  "movieId": "", // Movie ID - used to update the count of likes
+}
+//
+POST /unlike
+{
+  "userId": "", // User ID - used to add movieId to user's list of liked movies
+  "movieId": "", // Movie ID - used to update the count of likes
+}
+//
+GET /movie?title=spider-man
+
+
