@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class EntryBody {
+    private String _id;
     private String title;
     private String year;
     private String rated;
@@ -32,6 +32,37 @@ public class EntryBody {
     private int likes;
     private ArrayList<Review> reviews;
     private String trailer;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public EntryBody(String _id, String title, String year, String rated, String released, String runtime, String genre, String director, String writer, ArrayList<Actor> actors, String plot, String language, String country, String awards, String poster, String rating, String production, int likes, ArrayList<Review> reviews, String trailer) {
+        this._id = _id;
+        this.title = title;
+        this.year = year;
+        this.rated = rated;
+        this.released = released;
+        this.runtime = runtime;
+        this.genre = genre;
+        this.director = director;
+        this.writer = writer;
+        this.actors = actors;
+        this.plot = plot;
+        this.language = language;
+        this.country = country;
+        this.awards = awards;
+        this.poster = poster;
+        this.rating = rating;
+        this.production = production;
+        this.likes = likes;
+        this.reviews = reviews;
+        this.trailer = trailer;
+    }
 
     public EntryBody(String title, String year, String rated, String released, String runtime, String genre, String director, String writer, ArrayList<Actor> actors, String plot, String language, String country, String awards, String poster, String rating, String production, int likes, ArrayList<Review> reviews, String trailer) {
         this.title = title;
@@ -56,6 +87,7 @@ public class EntryBody {
     }
 
     public EntryBody(Movie movie, ArrayList<Actor> actors, ArrayList<Review> reviews) {
+        this._id = movie.get_id();
         this.title = movie.getTitle();
         this.year = movie.getYear();
         this.rated = movie.getRated();

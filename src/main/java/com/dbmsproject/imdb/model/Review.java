@@ -1,5 +1,6 @@
 package com.dbmsproject.imdb.model;
 
+import com.dbmsproject.imdb.enums.CollectionsName;
 import com.dbmsproject.imdb.requestbodies.PostRequestBody;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -11,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Getter
 @Setter
-@Document(collection = "reviews")
+@Document(collection = CollectionsName.reviews)
 public class Review {
 
     @Id

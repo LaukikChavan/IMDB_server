@@ -1,5 +1,7 @@
 package com.dbmsproject.imdb;
 
+import com.dbmsproject.imdb.enums.COLLECTIONS;
+import com.dbmsproject.imdb.enums.STATUS_CODE;
 import com.dbmsproject.imdb.model.Actor;
 import com.dbmsproject.imdb.model.Movie;
 import com.dbmsproject.imdb.model.Review;
@@ -9,6 +11,7 @@ import com.dbmsproject.imdb.repositories.MovieRepository;
 import com.dbmsproject.imdb.repositories.ReviewRepository;
 import com.dbmsproject.imdb.repositories.UserRepository;
 import com.dbmsproject.imdb.requestbodies.EntryBody;
+import com.dbmsproject.imdb.responsebody.EndBody;
 import com.dbmsproject.imdb.responsebody.MiniMovieBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -19,7 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("*")
@@ -43,19 +45,20 @@ public class MovieDatabaseHandler {
 
     @PostMapping(value = "/add-movie", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Movie> addMovie(@RequestBody EntryBody entryBody) {
+    public EndBody addMovie(@RequestBody EntryBody entryBody) {
         Actor actorIds;
         Review reviewIds;
         ArrayList<String> actorIdsString = new ArrayList<>();
         ArrayList<String> reviewIdsString = new ArrayList<>();
 
         Movie alreadyMovie = mongoOperations.findOne(Query.query(Criteria.where("title").is(entryBody.getTitle()))
-                .addCriteria(Criteria.where("released").is(entryBody.getReleased())), Movie.class, "movies");
+                .addCriteria(Criteria.where("released").is(entryBody.getReleased())), Movie.class, COLLECTIONS.MOVIES.getValue());
+
 
         if(alreadyMovie == null) {
             for (Actor actor: entryBody.getActors()) {
                 Actor already = mongoOperations.findOne(Query.query(Criteria.where("name").is(actor.getName()))
-                        .addCriteria(Criteria.where("dob").is(actor.getDob())), Actor.class, "actors");
+                        .addCriteria(Criteria.where("dob").is(actor.getDob())), Actor.class, COLLECTIONS.ACTORS.getValue());
                 if (already == null) {
                     actorIds = actorRepository.insert(actor);
                     actorIdsString.add(actorIds.get_id());
@@ -64,14 +67,16 @@ public class MovieDatabaseHandler {
                 }
             }
 
-            for (Review review: entryBody.getReviews()) {
-                Review already = mongoOperations.findOne(Query.query(Criteria.where("userId").is(review.getUserId()))
-                        .addCriteria(Criteria.where("movieId").is(review.getMovieId())), Review.class, "reviews");
-                if(already == null) {
-                    reviewIds = reviewRepository.insert(review);
-                    reviewIdsString.add(reviewIds.get_id());
-                } else {
-                    reviewIdsString.add(already.get_id());
+            if(entryBody.getReviews() != null) {
+                for (Review review: entryBody.getReviews()) {
+                    Review already = mongoOperations.findOne(Query.query(Criteria.where("userId").is(review.getUserId()))
+                            .addCriteria(Criteria.where("movieId").is(review.getMovieId())), Review.class, COLLECTIONS.REVIEWS.getValue());
+                    if(already == null) {
+                        reviewIds = reviewRepository.insert(review);
+                        reviewIdsString.add(reviewIds.get_id());
+                    } else {
+                        reviewIdsString.add(already.get_id());
+                    }
                 }
             }
 
@@ -79,8 +84,10 @@ public class MovieDatabaseHandler {
             movie.setActors(actorIdsString);
             movie.setReviews(reviewIdsString);
             movieRepository.insert(movie);
+            return new EndBody(STATUS_CODE.INSERTED.getI(), "Movie is Added");
+        } else {
+            return new EndBody(STATUS_CODE.ALREADY_FOUND.getI(), "Same movie with title and released date found in database");
         }
-        return movieRepository.findAll();
     }
 
     @GetMapping(value = "/get-movie-minified", params = {"title"})

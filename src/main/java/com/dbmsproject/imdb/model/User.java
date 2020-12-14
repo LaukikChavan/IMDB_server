@@ -1,5 +1,6 @@
 package com.dbmsproject.imdb.model;
 
+import com.dbmsproject.imdb.enums.CollectionsName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 @Data
 @Getter
 @Setter
-@Document(collection = "users")
+@Document(collection = CollectionsName.users)
 public class User {
 
     @Id

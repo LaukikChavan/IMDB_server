@@ -1,5 +1,6 @@
 package com.dbmsproject.imdb.model;
 
+import com.dbmsproject.imdb.enums.CollectionsName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
@@ -10,49 +11,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Getter
 @Setter
-@Document(collection = "actors")
+@Document(collection = CollectionsName.actors)
 public class Actor {
 
     @Id
     private String _id;
     private String name;
     private String image;
-    private String gender;
     private String dob;
 
-    public Actor(String id, String name, String image, String gender, String dob) {
-        _id = id;
-        this.name = name;
-        this.image = image;
-        this.gender = gender;
-        this.dob = dob;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
     public Actor() {
-    }
-
-    public Actor(String id, String name, String image, String gender) {
-        _id = id;
-        this.name = name;
-        this.image = image;
-        this.gender = gender;
-    }
-
-    @JsonIgnore
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
     }
 
     public String getName() {
@@ -71,11 +39,27 @@ public class Actor {
         this.image = image;
     }
 
-    public String getGender() {
-        return gender;
+    public String getDob() {
+        return dob;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public Actor(String _id, String name, String image, String dob) {
+        this._id = _id;
+        this.name = name;
+        this.image = image;
+        this.dob = dob;
+    }
+
+    @JsonIgnore
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 }

@@ -1,5 +1,6 @@
 package com.dbmsproject.imdb.model;
 
+import com.dbmsproject.imdb.enums.CollectionsName;
 import com.dbmsproject.imdb.requestbodies.EntryBody;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 @Data
 @Getter
 @Setter
-@Document(collection = "movies")
+@Document(collection = CollectionsName.movies)
 public class Movie {
     @Id
     private String _id;
@@ -46,28 +47,32 @@ public class Movie {
 
     public Movie(String _id, String title, String year, String rated, String released, String runtime, String genre, String director, String writer, ArrayList<String> actors, String plot, String language, String country, String awards, String poster, String rating, String production, int likes, String trailer, ArrayList<String> reviews) {
         this._id = _id;
+
         this.title = title;
         this.year = year;
         this.rated = rated;
         this.released = released;
         this.runtime = runtime;
         this.genre = genre;
-        this.director = director;
-        this.writer = writer;
+
         this.actors = actors;
-        this.plot = plot;
+
+        this.director = director;
+        this.production = production;
+        this.writer = writer;
         this.language = language;
+
+        this.plot = plot;
+        this.trailer = trailer;
         this.country = country;
         this.awards = awards;
         this.poster = poster;
-        this.rating = rating;
-        this.production = production;
+
         this.likes = likes;
-        this.trailer = trailer;
         this.reviews = reviews;
+        this.rating = rating;
     }
 
-    @JsonIgnore
     public String get_id() {
         return _id;
     }
